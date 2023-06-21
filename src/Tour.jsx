@@ -12,8 +12,7 @@ const Tour = ({ tour, removeTour }) => {
       <div className="tour-info">
         <h5>{name}</h5>
         <p>
-          {!showMore ? info.substring(0, 200) : info}
-          {!showMore ? '...' : ''}
+          {!showMore ? `${info.substring(0, 200)}...` : info}
           <span className="info-btn" onClick={() => setShowMore(!showMore)}>
             {!showMore ? 'Read More' : 'Show Less'}
           </span>

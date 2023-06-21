@@ -13,35 +13,51 @@ const App = () => {
     const newTours = tours.filter((tour) => tour.id !== id)
     setTours(newTours)
   }
-  useEffect(() => {
-    const FetchData = async () => {
-      try {
-        const resp = await fetch(url)
-        if (!resp.ok) {
-          setIsError(true)
-          setIsLoading(false)
-          console.log(error)
-          return
-        }
-        const data = await resp.json()
-        setTours(data)
-      } catch (error) {
+  const FetchData = async () => {
+    try {
+      const resp = await fetch(url)
+      if (!resp.ok) {
         setIsError(true)
+        setIsLoading(false)
         console.log(error)
+        return
       }
-      setIsLoading(false)
+      const data = await resp.json()
+      setTours(data)
+    } catch (error) {
+      setIsError(true)
+      console.log(error)
     }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
     FetchData()
   }, [])
   if (isLoading) {
-    return <Loading />
+    return (
+      <main>
+        <Loading />
+      </main>
+    )
   }
   if (isError) {
     return <h2>There was an error</h2>
   }
+  if (tours.length === 0) {
+    return (
+      <div className="refresh-div">
+        <h3>No Tours Left</h3>
+        <button className="btn" onClick={() => FetchData()}>
+          Refresh
+        </button>
+      </div>
+    )
+  }
   return (
     <main>
       <h2 className="title">Our Tours</h2>
+      <div className="title-underline"></div>
       <Tours tours={tours} removeTour={removeTour} />
     </main>
   )
